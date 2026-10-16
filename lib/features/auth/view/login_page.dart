@@ -49,6 +49,10 @@ class _LoginPageState extends State<LoginPage> {
           FilledButton(onPressed: _submit, child: const Text('Entrar')),
           const SizedBox(height: 8),
           TextButton(
+            onPressed: () => context.go('/cadastro'),
+            child: const Text('Criar conta'),
+          ),
+          TextButton(
             onPressed: () => context.go('/'),
             child: const Text('Explorar sem entrar'),
           ),
