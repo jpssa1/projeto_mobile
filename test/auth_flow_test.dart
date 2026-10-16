@@ -21,6 +21,30 @@ Future<void> tapText(WidgetTester tester, String text) async {
 }
 
 void main() {
+  testWidgets('Recuperação valida e-mail, simula envio e retorna ao login', (
+    tester,
+  ) async {
+    await openApp(tester);
+    await tapText(tester, 'Esqueci minha senha');
+    expect(find.text('Recuperar senha'), findsOneWidget);
+    await tapText(tester, 'Simular recuperação');
+    expect(find.text('Informe seu e-mail.'), findsOneWidget);
+    await tester.enterText(find.byType(TextFormField), 'invalido');
+    await tapText(tester, 'Simular recuperação');
+    expect(find.text('Informe um e-mail válido.'), findsOneWidget);
+    await tester.enterText(find.byType(TextFormField), 'jogador@example.com');
+    await tapText(tester, 'Simular recuperação');
+    expect(find.text('Solicitação simulada!'), findsOneWidget);
+    expect(find.textContaining('Nenhum e-mail foi enviado.'), findsOneWidget);
+    await tapText(tester, 'Tentar outro e-mail');
+    expect(find.text('Recuperar senha'), findsOneWidget);
+    await tapText(tester, 'Voltar ao login');
+    expect(find.text('Sua aventura começa aqui'), findsOneWidget);
+    await tapText(tester, 'Explorar sem entrar');
+    expect(find.text('Começar minha missão'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('Cadastro valida os campos e simula a criação sem salvar dados', (
     tester,
   ) async {

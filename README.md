@@ -11,6 +11,21 @@ flutter run
 
 ## Organização e responsabilidades
 
+### Acesso demonstrativo
+
+Depois da splash, o app abre o login (`/login`). As telas de cadastro
+(`/cadastro`) e recuperação de senha (`/recuperar-senha`) estão disponíveis pelos
+links do formulário. Todas mantêm a identidade visual e permitem rolagem com o
+teclado aberto ou em telas pequenas.
+
+Este fluxo é um protótipo: use dados fictícios. O login aceita qualquer e-mail
+válido e senha com pelo menos 6 caracteres; também é possível explorar sem
+entrar. O cadastro valida nome, e-mail, senha e confirmação. A recuperação exibe
+uma confirmação de simulação. Não há autenticação, persistência de dados, criação
+de conta ou envio de e-mail. A home oferece um botão para voltar ao login.
+
+### Estrutura
+
 O padrão de pastas existente foi preservado, incluindo o nome `view model`.
 
 - `lib/core`: composição do app, rotas GoRouter, tema, cliente Dio e widgets compartilhados.

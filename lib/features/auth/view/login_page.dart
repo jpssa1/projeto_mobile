@@ -45,6 +45,13 @@ class _LoginPageState extends State<LoginPage> {
             controller: _password,
             onSubmitted: (_) => _submit(),
           ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: () => context.go('/recuperar-senha'),
+              child: const Text('Esqueci minha senha'),
+            ),
+          ),
           const SizedBox(height: 24),
           FilledButton(onPressed: _submit, child: const Text('Entrar')),
           const SizedBox(height: 8),

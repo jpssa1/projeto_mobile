@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/view/login_page.dart';
 import '../../features/auth/view/register_page.dart';
+import '../../features/auth/view/recover_password_page.dart';
 import '../../features/home/view/home_page.dart';
 import '../../features/quiz/view/quiz_page.dart';
 
@@ -11,6 +12,10 @@ final routerProvider = Provider<GoRouter>((ref) {
     initialLocation: '/login',
     routes: [
       GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
+      GoRoute(
+        path: '/recuperar-senha',
+        builder: (context, state) => const RecoverPasswordPage(),
+      ),
       GoRoute(
         path: '/cadastro',
         builder: (context, state) => const RegisterPage(),
