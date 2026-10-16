@@ -14,6 +14,14 @@ class HomePage extends ConsumerWidget {
     final content = ref.watch(homeViewModelProvider);
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () => context.go('/login'),
+            tooltip: 'Voltar ao login',
+            icon: const Icon(Icons.logout_rounded),
+          ),
+          const SizedBox(width: 8),
+        ],
         title: const Row(
           children: [
             Icon(Icons.sports_esports_rounded),

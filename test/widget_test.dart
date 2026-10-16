@@ -18,6 +18,19 @@ void main() {
     expect(find.text('Começar minha missão'), findsNothing);
     await tester.pump(SplashScreen.duration);
     await tester.pumpAndSettle();
+    expect(find.text('Sua aventura começa aqui'), findsOneWidget);
+    await tester.tap(find.text('Entrar'));
+    await tester.pumpAndSettle();
+    expect(find.text('Informe seu e-mail.'), findsOneWidget);
+    expect(find.text('Informe sua senha.'), findsOneWidget);
+    await tester.enterText(
+      find.byType(TextFormField).at(0),
+      'jogador@example.com',
+    );
+    await tester.enterText(find.byType(TextFormField).at(1), 'senha123');
+    await tester.ensureVisible(find.text('Entrar'));
+    await tester.tap(find.text('Entrar'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Começar minha missão'));
     await tester.pumpAndSettle();
     expect(find.text('Pergunta 1 de 5'), findsOneWidget);
