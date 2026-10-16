@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../features/splash/view/splash_screen.dart';
 import 'router/app_router.dart';
 import 'theme/app_theme.dart';
 
@@ -11,5 +12,6 @@ class MyApp extends ConsumerWidget {
     debugShowCheckedModeBanner: false,
     theme: AppTheme.light,
     routerConfig: ref.watch(routerProvider),
+    builder: (context, child) => SplashScreen(child: child!),
   );
 }
