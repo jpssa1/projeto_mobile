@@ -1,3 +1,4 @@
+import 'dart:ui' show Rect;
 import '../model/question_model.dart';
 import '../model/quiz_repository_model.dart';
 
@@ -68,6 +69,30 @@ class LocalQuizRepository implements QuizRepository {
       correctIndex: 0,
       explanation:
           'Um protótipo permite testar a mecânica principal antes de investir na produção completa.',
+    ),
+    Question(
+      id: 'environmental-storytelling',
+      title:
+          'Clique no elemento que representa narrativa ambiental (environmental storytelling).',
+      // A ordem das alternativas é a mesma ordem das áreas abaixo.
+      options: [
+        'Interface (HUD)',
+        'Itens colecionáveis',
+        'Narrativa ambiental',
+        'Objetivo da fase',
+        'Personagem do jogador',
+      ],
+      correctIndex: 2,
+      explanation:
+          'Narrativa ambiental conta a história pelo cenário, sem texto: a barraca rasgada, as espadas cravadas, a mochila abandonada e as brasas da fogueira mostram que houve uma luta e que alguém saiu às pressas.',
+      imageAsset: 'assets/images/quiz_cenario_acampamento.png',
+      areas: [
+        Rect.fromLTWH(0.016, 0.021, 0.258, 0.132), // HUD
+        Rect.fromLTWH(0.461, 0.236, 0.203, 0.181), // moedas
+        Rect.fromLTWH(0.078, 0.514, 0.330, 0.354), // acampamento (correta)
+        Rect.fromLTWH(0.797, 0.389, 0.125, 0.375), // portal
+        Rect.fromLTWH(0.410, 0.514, 0.078, 0.250), // personagem
+      ],
     ),
   ];
 }

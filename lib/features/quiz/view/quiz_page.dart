@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:projeto_mobile/features/quiz/widgets/answer_card.dart';
+import 'package:projeto_mobile/features/quiz/widgets/image_question.dart';
 import 'package:projeto_mobile/features/quiz/widgets/result_card.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../utils/widgets/game_card.dart';
@@ -75,31 +76,45 @@ class QuizPage extends ConsumerWidget {
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           const SizedBox(height: 8),
-                          const Text('Escolha uma alternativa para continuar.'),
+                          Text(
+                            state.question.isImageQuestion
+                                ? 'Toque na imagem. Você tem 3 tentativas.'
+                                : 'Escolha uma alternativa para continuar.',
+                          ),
                           const SizedBox(height: 24),
-                          for (
-                            var i = 0;
-                            i < state.question.options.length;
-                            i++
-                          )
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
-                              child: Answer(
-                                label: state.question.options[i],
-                                index: i,
-                                selected: state.selected == i,
-                                correct:
-                                    state.confirmed &&
-                                    state.question.correctIndex == i,
-                                wrong:
-                                    state.confirmed &&
-                                    state.selected == i &&
-                                    state.question.correctIndex != i,
-                                onTap: state.confirmed
-                                    ? null
-                                    : () => vm.select(i),
+                          if (state.question.isImageQuestion)
+                            ImageQuestion(
+                              // A chave reinicia as tentativas a cada pergunta.
+                              key: ValueKey(state.question.id),
+                              question: state.question,
+                              confirmed: state.confirmed,
+                              onResult: (isCorrect) =>
+                                  vm.answerImage(isCorrect: isCorrect),
+                            )
+                          else
+                            for (
+                              var i = 0;
+                              i < state.question.options.length;
+                              i++
+                            )
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 12),
+                                child: Answer(
+                                  label: state.question.options[i],
+                                  index: i,
+                                  selected: state.selected == i,
+                                  correct:
+                                      state.confirmed &&
+                                      state.question.correctIndex == i,
+                                  wrong:
+                                      state.confirmed &&
+                                      state.selected == i &&
+                                      state.question.correctIndex != i,
+                                  onTap: state.confirmed
+                                      ? null
+                                      : () => vm.select(i),
+                                ),
                               ),
-                            ),
                           if (state.confirmed) ...[
                             const SizedBox(height: 12),
                             GameCard(
@@ -127,20 +142,24 @@ class QuizPage extends ConsumerWidget {
                             ),
                           ],
                           const SizedBox(height: 24),
-                          FilledButton(
-                            onPressed: state.confirmed
-                                ? vm.next
-                                : state.selected == null
-                                ? null
-                                : vm.confirm,
-                            child: Text(
-                              state.confirmed
-                                  ? (state.index == state.questions.length - 1
-                                        ? 'Ver meu resultado'
-                                        : 'Próxima pergunta')
-                                  : 'Confirmar resposta',
+                          // Na pergunta de imagem não há "Confirmar": a
+                          // resposta vale assim que acerta ou acabam as tentativas.
+                          if (state.confirmed ||
+                              !state.question.isImageQuestion)
+                            FilledButton(
+                              onPressed: state.confirmed
+                                  ? vm.next
+                                  : state.selected == null
+                                  ? null
+                                  : vm.confirm,
+                              child: Text(
+                                state.confirmed
+                                    ? (state.index == state.questions.length - 1
+                                          ? 'Ver meu resultado'
+                                          : 'Próxima pergunta')
+                                    : 'Confirmar resposta',
+                              ),
                             ),
-                          ),
                           const SizedBox(height: 16),
                           const Text(
                             'Sem pressa. O importante é aprender!',
