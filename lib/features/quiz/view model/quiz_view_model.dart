@@ -80,6 +80,28 @@ class QuizViewModel extends AsyncNotifier<QuizState> {
     );
   }
 
+  void answerImage({required bool isCorrect}) {
+    final current = state.asData?.value;
+    if (current == null ||
+        !current.question.isImageQuestion ||
+        current.confirmed ||
+        current.finished) {
+      return;
+    }
+    final question = current.question;
+    state = AsyncData(
+      QuizState(
+        questions: current.questions,
+        index: current.index,
+        selected: isCorrect
+            ? question.correctIndex
+            : (question.correctIndex + 1) % question.options.length,
+        confirmed: true,
+        correct: current.correct + (isCorrect ? 1 : 0),
+      ),
+    );
+  }
+
   void next() {
     final current = state.asData?.value;
     if (current == null || !current.confirmed || current.finished) return;

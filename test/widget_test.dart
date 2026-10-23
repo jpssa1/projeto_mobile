@@ -33,7 +33,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Começar minha missão'));
     await tester.pumpAndSettle();
-    expect(find.text('Pergunta 1 de 5'), findsOneWidget);
+    expect(find.text('Pergunta 1 de 6'), findsOneWidget);
     expect(
       tester
           .widget<FilledButton>(
