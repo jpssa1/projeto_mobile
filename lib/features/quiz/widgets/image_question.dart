@@ -10,6 +10,7 @@ class ImageQuestion extends StatefulWidget {
     required this.question,
     required this.confirmed,
     required this.onResult,
+    this.onRetry,
     this.maxAttempts = 3,
   });
   final Question question;
@@ -18,6 +19,7 @@ class ImageQuestion extends StatefulWidget {
 
   /// Chamado uma única vez: true se acertou, false se acabaram as tentativas.
   final void Function(bool isCorrect) onResult;
+  final VoidCallback? onRetry;
 
   @override
   State<ImageQuestion> createState() => _ImageQuestionState();
@@ -46,7 +48,11 @@ class _ImageQuestionState extends State<ImageQuestion> {
           ? 'Aí não tem nada importante. Tente outro lugar!'
           : 'Esse é: ${widget.question.options[hit]}. Tente outro!';
     });
-    if (_misses.length >= widget.maxAttempts) widget.onResult(false);
+    if (_misses.length >= widget.maxAttempts) {
+      widget.onResult(false);
+    } else {
+      widget.onRetry?.call();
+    }
   }
 
   @override

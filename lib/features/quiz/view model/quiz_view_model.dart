@@ -1,4 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../progress/model/learning_progress.dart';
+import '../../progress/providers/learning_progress_provider.dart';
+import '../../progress/repository/learning_metrics_repository.dart';
 import '../repository/local_quiz_repository.dart';
 import '../model/question_model.dart';
 import '../model/quiz_repository_model.dart';
@@ -33,11 +36,47 @@ class QuizState {
 }
 
 class QuizViewModel extends AsyncNotifier<QuizState> {
+  ActivitySession? _session;
+  bool _timingPaused = false;
+
   @override
   Future<QuizState> build() async {
+    final metrics = ref.watch(learningMetricsRepositoryProvider);
     final questions = await ref.watch(quizRepositoryProvider).loadQuestions();
     if (questions.isEmpty) throw const FormatException('Questionário vazio.');
+    if (ref.mounted) {
+      final session = metrics.start(LearningActivity.quiz);
+      _session = session;
+      if (_timingPaused) session.pause();
+      ref.onDispose(session.close);
+    }
     return QuizState(questions: questions);
+  }
+
+  void pauseTiming() {
+    _timingPaused = true;
+    _session?.pause();
+  }
+
+  void resumeTiming() {
+    _timingPaused = false;
+    _session?.resume();
+  }
+
+  void recordImageRetry() {
+    final current = state.asData?.value;
+    if (current == null ||
+        current.confirmed ||
+        current.finished ||
+        !current.question.isImageQuestion) {
+      return;
+    }
+    _session?.answer(topic: current.question.topic, correct: false);
+  }
+
+  void _recordAnswer(QuizState current, bool correct) {
+    _session?.answer(topic: current.question.topic, correct: correct);
+    _session?.score((current.correct + (correct ? 1 : 0)) * 20);
   }
 
   void select(int option) {
@@ -67,6 +106,7 @@ class QuizViewModel extends AsyncNotifier<QuizState> {
         current.finished) {
       return;
     }
+    _recordAnswer(current, current.selected == current.question.correctIndex);
     state = AsyncData(
       QuizState(
         questions: current.questions,
@@ -88,6 +128,7 @@ class QuizViewModel extends AsyncNotifier<QuizState> {
         current.finished) {
       return;
     }
+    _recordAnswer(current, isCorrect);
     final question = current.question;
     state = AsyncData(
       QuizState(
@@ -106,6 +147,7 @@ class QuizViewModel extends AsyncNotifier<QuizState> {
     final current = state.asData?.value;
     if (current == null || !current.confirmed || current.finished) return;
     final finished = current.index == current.questions.length - 1;
+    if (finished) _session?.close(completed: true);
     state = AsyncData(
       QuizState(
         questions: current.questions,

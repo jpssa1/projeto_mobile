@@ -57,6 +57,12 @@ class Result extends StatelessWidget {
         label: const Text('Jogar novamente'),
       ),
       const SizedBox(height: 12),
+      OutlinedButton.icon(
+        onPressed: () => context.go('/progresso'),
+        icon: const Icon(Icons.insights_rounded),
+        label: const Text('Ver meu progresso'),
+      ),
+      const SizedBox(height: 12),
       TextButton(
         onPressed: () => context.go('/'),
         child: const Text('Voltar ao início'),

@@ -7,6 +7,7 @@ class Question {
     required List<String> options,
     required this.correctIndex,
     required this.explanation,
+    this.topic = 'Conhecimentos gerais',
     this.imageAsset,
     List<Rect>? areas,
   }) : options = List.unmodifiable(options),
@@ -25,6 +26,7 @@ class Question {
   final List<String> options;
   final int correctIndex;
   final String explanation;
+  final String topic;
   final String? imageAsset;
   final List<Rect>? areas;
 
@@ -36,5 +38,6 @@ class Question {
     options: (json['options'] as List).cast<String>(),
     correctIndex: json['correctIndex'] as int,
     explanation: json['explanation'] as String,
+    topic: json['topic'] as String? ?? 'Conhecimentos gerais',
   );
 }

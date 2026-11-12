@@ -51,15 +51,23 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.all(32),
                     child: TweenAnimationBuilder<double>(
+                      key: const ValueKey('splash-logo-animation'),
                       tween: Tween(begin: reduceMotion ? 1 : 0, end: 1),
                       duration: reduceMotion
                           ? Duration.zero
-                          : const Duration(milliseconds: 600),
+                          : const Duration(milliseconds: 1000),
                       builder: (context, value, child) => Opacity(
                         opacity: value,
-                        child: Transform.scale(
-                          scale: 0.94 + value * 0.06,
-                          child: child,
+                        child: Transform.translate(
+                          offset: Offset(0, 24 * (1 - value)),
+                          child: Transform.scale(
+                            scale: reduceMotion
+                                ? 1
+                                : 0.75 +
+                                      Curves.easeOutBack.transform(value) *
+                                          0.25,
+                            child: child,
+                          ),
                         ),
                       ),
                       child: Column(

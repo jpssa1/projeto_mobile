@@ -8,10 +8,34 @@ import '../../../core/theme/app_theme.dart';
 import '../../../utils/widgets/game_card.dart';
 import '../view model/quiz_view_model.dart';
 
-class QuizPage extends ConsumerWidget {
+class QuizPage extends ConsumerStatefulWidget {
   const QuizPage({super.key});
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<QuizPage> createState() => _QuizPageState();
+}
+
+class _QuizPageState extends ConsumerState<QuizPage>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final vm = ref.read(quizProvider.notifier);
+    state == AppLifecycleState.resumed ? vm.resumeTiming() : vm.pauseTiming();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final quiz = ref.watch(quizProvider);
     final vm = ref.read(quizProvider.notifier);
     return Scaffold(
@@ -88,6 +112,7 @@ class QuizPage extends ConsumerWidget {
                               key: ValueKey(state.question.id),
                               question: state.question,
                               confirmed: state.confirmed,
+                              onRetry: vm.recordImageRetry,
                               onResult: (isCorrect) =>
                                   vm.answerImage(isCorrect: isCorrect),
                             )

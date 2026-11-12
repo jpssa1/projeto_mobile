@@ -7,6 +7,7 @@ class LocalQuizRepository implements QuizRepository {
   Future<List<Question>> loadQuestions() async => [
     Question(
       id: 'design',
+      topic: 'Game design',
       title: 'Qual é o papel do game design?',
       options: [
         'Criar apenas os desenhos',
@@ -20,6 +21,7 @@ class LocalQuizRepository implements QuizRepository {
     ),
     Question(
       id: 'engine',
+      topic: 'Engines de jogos',
       title: 'O que é uma engine de jogos?',
       options: [
         'Uma ferramenta para criar jogos',
@@ -33,6 +35,7 @@ class LocalQuizRepository implements QuizRepository {
     ),
     Question(
       id: 'loop',
+      topic: 'Game loop',
       title: 'Qual exemplo representa um game loop?',
       options: [
         'O logotipo do estúdio',
@@ -46,6 +49,7 @@ class LocalQuizRepository implements QuizRepository {
     ),
     Question(
       id: 'feedback',
+      topic: 'Feedback ao jogador',
       title: 'Por que dar feedback ao jogador?',
       options: [
         'Para esconder as regras',
@@ -59,6 +63,7 @@ class LocalQuizRepository implements QuizRepository {
     ),
     Question(
       id: 'prototype',
+      topic: 'Prototipagem',
       title: 'Qual é o objetivo de um protótipo?',
       options: [
         'Testar uma ideia rapidamente',
@@ -72,6 +77,7 @@ class LocalQuizRepository implements QuizRepository {
     ),
     Question(
       id: 'environmental-storytelling',
+      topic: 'Narrativa ambiental',
       title:
           'Clique no elemento que representa narrativa ambiental (environmental storytelling).',
       // A ordem das alternativas é a mesma ordem das áreas abaixo.

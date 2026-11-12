@@ -6,6 +6,7 @@ import 'package:projeto_mobile/utils/widgets/mascote_icon.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../utils/widgets/game_card.dart';
 import '../view model/home_view_model.dart';
+import '../widgets/snake_game_content.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -15,6 +16,11 @@ class HomePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          IconButton(
+            onPressed: () => context.go('/progresso'),
+            tooltip: 'Meu progresso',
+            icon: const Icon(Icons.insights_rounded),
+          ),
           IconButton(
             onPressed: () => context.go('/login'),
             tooltip: 'Voltar ao login',
@@ -106,6 +112,30 @@ class HomePage extends ConsumerWidget {
                   ),
                   const SizedBox(height: 20),
                   GameCard(child: GameCardMainContent()),
+                  const SizedBox(height: 24),
+                  const GameCard(child: SnakeGameContent()),
+                  const SizedBox(height: 24),
+                  GameCard(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          'Acompanhe sua aprendizagem',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Veja seu tempo em cada atividade, suas tentativas e os assuntos que merecem mais prática.',
+                        ),
+                        const SizedBox(height: 16),
+                        OutlinedButton.icon(
+                          onPressed: () => context.go('/progresso'),
+                          icon: const Icon(Icons.insights_rounded),
+                          label: const Text('Ver meu progresso'),
+                        ),
+                      ],
+                    ),
+                  ),
                   const SizedBox(height: 24),
                   const GameCard(
                     color: Color(0xFFECE4F6),
